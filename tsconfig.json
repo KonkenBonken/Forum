@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2021", "dom"],
+    "lib": ["es2022","es7", "dom"],
+    "noImplicitAny": false
   }
 }
