@@ -1,7 +1,7 @@
 {
   "name": "forum",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "script.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KonkenBonken/Forum.git"
@@ -13,11 +13,13 @@
   },
   "homepage": "https://github.com/KonkenBonken/Forum#readme",
   "dependencies": {
+    "randomnorepeat": "^1.1.1",
     "save-on-change": "^1.0.7"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
     "ts-node": "^10.7.0",
+    "tsc-watch": "^4.6.2",
     "typescript": "^4.6.2"
   }
 }
