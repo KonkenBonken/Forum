@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Forum</title>
+  <script src="/socket.io/socket.io.min.js"></script>
+  <script>
+    let userId = <%= userId ?? "null" %>,
+      loggedIn = <%= loggedIn %>,
+      user = <%= JSON.stringify(user)?.length>2 ? JSON.stringify(user) : "null" %>;
+    const socket = io('/', { query:{ userId } });
+    io = undefined;
+
+    const newDiv = (el = 'div', ...classes) => {
+			let div = document.createElement(el);
+			if (classes) classes.forEach(cl => div.classList.add(cl));
+			return div;
+		}
+  {
+    const elProto = HTMLElement.prototype;
+  	elProto.Html = function (str) { this.innerHTML = str; return this };
+  	elProto.Id = function (str) { this.id = str; return this };
+  	elProto.Type = function (str) { this.type = str; return this };
+  	elProto.Value = function (str) { this.value = str; return this };
+  	elProto.Src = function (str) { this.src = str; return this };
+  	elProto.Append = function (...el) { if (el[0]) this.append(...el); return this };
+  	elProto.Prepend = function (...el) { if (el[0]) this.prepend(...el); return this };
+  	elProto.Attribute = function (key, value = '', ignIfEpty = false) { if (!ignIfEpty && value) this.setAttribute(key, value); return this };
+  	elProto.On = function (a, b) { this.addEventListener(b ? a : 'click', b || a); return this };
+  }
+function setup() {
+  console.log('setup');
+  document.body.innerHTML = '';
+  if (loggedIn)
+    document.body.Append(
+      newDiv('h2').Html('Welcome ' + user.username)
+    )
+  else if (user) {
+    const input = newDiv('input').Attribute('placeholder','One Time Code');
+    document.body.Append(
+      newDiv('h2').Html('Login as ' + user.username),
+      input,
+      newDiv('button').Html('Login').On(() => {
+        if (+input.value && input.value.length == 6)
+          socket.emit('login', input.value, success => {
+            console.log(success);
+            loggedIn = true;
+            if(success) setup();
+          })
+        })
+      );
+  } else {
+    const input = newDiv('input').Attribute('placeholder','Username');
+    document.body.Append(
+      newDiv('h2').Html('Enter username:'),
+      input,
+      newDiv('button').Html('Login').On(() =>
+        socket.emit('setUsername', input.value, userObj => {
+          console.log(userObj);
+          userId = userObj.id;
+          user = userObj;
+          if(userObj) setup();
+        })));
+  }
+}
+document.addEventListener('DOMContentLoaded', setup, false);
+
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>
